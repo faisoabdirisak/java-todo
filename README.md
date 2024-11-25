@@ -14,4 +14,3 @@ Haji
 
 huska
 
-haji
