@@ -1,46 +1,23 @@
 pipeline {
     agent any
-
     tools {
-        gradle 'Gradle-6'
+        gradle 'Gradle'
     }
-
-
-    environment {
-        VERSION_NUMBER = '1.0'
-    }
-
     stages {
-        stage('Clone repository') {
+        stage('clone repository') {
             steps {
-                echo 'Cloning repository'
-                git 'https://github.com/brianmarete/java-todo.git'
+                git branch: 'master', url:'https://github.com/faisoabdirisak/java-todo.git'
             }
         }
-        stage('Build ') {
+        stage('Build the project') {
             steps {
-                echo "Build number ${BUILD_NUMBER}"
-                // withGradle() {
-                    sh 'gradle build'
-                // }
+                sh 'gradle build'
             }
         }
-        stage('Test') {
+        stage('Tests') {
             steps {
-                echo 'Testing the project'
-                // withGradle() {
-                    sh 'gradle test'
-                // }
+                sh 'gradle test'
             }
-        }
-    }
-    post {
-        success {
-            slackSend color: "good", message: "Build #${BUILD_NUMBER} ran successfully"
-        }
-        
-        failure {
-            slackSend color: "danger", message: "Build #${BUILD_NUMBER} failed"
         }
     }
 }
